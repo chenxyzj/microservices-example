@@ -17,7 +17,7 @@
 
 <body>
   <h1>Create books</h1>
-  <form onsubmit="return API.saveBook()">
+  <form onsubmit="return saveBook('#bookname','http://localhost:8080/api/v1/books');">
     <input id="bookname" type="text">
     <input type="submit" value="submit">
   </form>
@@ -56,19 +56,16 @@
         }
         return false;
       }
-    const API = (() => {
-      const makeSaveFunc = (selector, postNameFunc) => () => {
+
+      function saveBook(selector,uri){
+        let val;
         try {
-          const val = document.querySelector(selector).value;
-          postNameFunc(val);
+          val = document.querySelector(selector).value;
         } catch (e) {
           console.log(e);
           console.log('--------------------------');
         }
-        return false;
-      };
 
-      const makePostNameFunc = uri => val => {
         fetch(uri, {
           method: 'POST',
           body: JSON.stringify({ name: val }),
@@ -77,19 +74,7 @@
             'Content-Type': 'application/json'
           }
         });
-      };
-
-      // const postVideoName = makePostNameFunc("http://localhost:8080/api/v1/videos");
-      const postBookName = makePostNameFunc("http://localhost:8080/api/v1/books");
-
-
-
-      return {
-        // saveVideo: makeSaveFunc("#videoname", postVideoName),
-        saveBook: makeSaveFunc("#bookname", postBookName),
-        //search
       }
-    })();
   </script>
 </body>
 
