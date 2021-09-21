@@ -17,12 +17,12 @@
 
 <body>
   <h1>Create books</h1>
-  <form onsubmit="return saveBook('#bookname','http://localhost:8080/api/v1/books');">
+  <form onsubmit="return save('#bookname','http://localhost:8080/api/v1/books');">
     <input id="bookname" type="text">
     <input type="submit" value="submit">
   </form>
   <h1>Create videos</h1>
-  <form onsubmit="return saveVideo('#videoname', 'http://localhost:8080/api/v1/videos');">
+  <form onsubmit="return save('#videoname', 'http://localhost:8080/api/v1/videos');">
     <input id="videoname" type="text">
     <input type="submit" value="submit">
   </form>
@@ -57,7 +57,7 @@
         return false;
       }
 
-      function saveBook(selector,uri){
+      function save(selector,uri){
         let val;
         try {
           val = document.querySelector(selector).value;
@@ -75,25 +75,7 @@
           }
         });
       }
-
-      function saveVideo(selector,uri){
-        let val;
-        try {
-          val = document.querySelector(selector).value;
-        } catch (e) {
-          console.log(e);
-          console.log('--------------------------');
-        }
-
-        fetch(uri, {
-          method: 'POST',
-          body: JSON.stringify({ name: val }),
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        });
-      }      
+   
   </script>
 </body>
 
