@@ -23,14 +23,14 @@ services:
     environment:
       - MONGO_DB_URI=mongodb://db/microservices
 
-  videos:
-    build: './videos'
-    ports:
-      - "3003:3000"
-    depends_on: 
-      - db
-    environment:
-      - MONGO_DB_URI=mongodb://db/microservices
+  # videos:
+  #   build: './videos'
+  #   ports:
+  #     - "3003:3000"
+  #   depends_on: 
+  #     - db
+  #   environment:
+  #     - MONGO_DB_URI=mongodb://db/microservices
   
   db:
     image: mongo
@@ -48,4 +48,4 @@ services:
       - web
       - books
       - search
-      - videos
+      # - videos

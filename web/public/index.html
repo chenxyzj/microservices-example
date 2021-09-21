@@ -21,11 +21,11 @@
     <input id="bookname" type="text">
     <input type="submit" value="submit">
   </form>
-  <h1>Create videos</h1>
+  <!-- <h1>Create videos</h1>
   <form onsubmit="return API.saveVideo()">
     <input id="videoname" type="text">
     <input type="submit" value="submit">
-  </form>
+  </form> -->
   <h1>Search ALL</h1>
   <form onsubmit="return API.search()">
     <input id="search" type="text">
@@ -56,7 +56,7 @@
         });
       };
 
-      const postVideoName = makePostNameFunc("http://localhost:8080/api/v1/videos");
+      // const postVideoName = makePostNameFunc("http://localhost:8080/api/v1/videos");
       const postBookName = makePostNameFunc("http://localhost:8080/api/v1/books");
 
       const search = () => {
@@ -84,7 +84,7 @@
       };
 
       return {
-        saveVideo: makeSaveFunc("#videoname", postVideoName),
+        // saveVideo: makeSaveFunc("#videoname", postVideoName),
         saveBook: makeSaveFunc("#bookname", postBookName),
         search
       }
