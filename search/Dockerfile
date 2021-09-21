@@ -4,7 +4,7 @@ COPY . /src
 
 WORKDIR /src
 
-RUN npm install --production
+# RUN npm install --production
 
 EXPOSE 3000
 
