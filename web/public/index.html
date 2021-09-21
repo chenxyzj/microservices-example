@@ -27,12 +27,35 @@
     <input type="submit" value="submit">
   </form> -->
   <h1>Search ALL</h1>
-  <form onsubmit="return API.search()">
+  <form onsubmit="return search1()">
     <input id="search" type="text">
     <input type="submit" value="submit">
   </form>
   <ul id="matches"></ul>
   <script>
+      function search1() {
+        try {
+          fetch("http://localhost:8080/api/v1/search")
+            .then(resp => resp.json())
+            .then(results => {
+              const ul = document.querySelector("#matches");
+              ul.innerHTML = '';
+              results.forEach(data => {
+                const li = document.createElement("li");
+                const liContent = `
+                  <p>${data.name}</p>
+                  <p>${data.type}</p>
+                `;
+                li.innerHTML = liContent;
+                ul.appendChild(li);
+              });
+            });
+        } catch (e) {
+          console.log(e);
+          console.log('--------------------------');
+        }
+        return false;
+      }
     const API = (() => {
       const makeSaveFunc = (selector, postNameFunc) => () => {
         try {
@@ -59,34 +82,12 @@
       // const postVideoName = makePostNameFunc("http://localhost:8080/api/v1/videos");
       const postBookName = makePostNameFunc("http://localhost:8080/api/v1/books");
 
-      function search() {
-        try {
-          fetch("http://localhost:8080/api/v1/search")
-            .then(resp => resp.json())
-            .then(results => {
-              const ul = document.querySelector("#matches");
-              ul.innerHTML = '';
-              results.forEach(data => {
-                const li = document.createElement("li");
-                const liContent = `
-                  <p>${data.name}</p>
-                  <p>${data.type}</p>
-                `;
-                li.innerHTML = liContent;
-                ul.appendChild(li);
-              });
-            });
-        } catch (e) {
-          console.log(e);
-          console.log('--------------------------');
-        }
-        return false;
-      }
+
 
       return {
         // saveVideo: makeSaveFunc("#videoname", postVideoName),
         saveBook: makeSaveFunc("#bookname", postBookName),
-        search
+        //search
       }
     })();
   </script>
