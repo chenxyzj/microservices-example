@@ -33,7 +33,7 @@ services:
       - MONGO_DB_URI=mongodb://db/microservices
   
   db:
-    image: mongo
+    image: mongo:4.4.8
     ports:
       - "27017:27017"
 
