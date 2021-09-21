@@ -1,9 +1,12 @@
 version: '3'
 services:
   web:
-    build: './web'
+    image: node:14.17.3-alpine
     ports:
       - "3000:3000"
+    volumes:
+      - ./web:/src
+    command: ["npm", "start"]
 
   search:
     build: './search'
@@ -48,4 +51,4 @@ services:
       - web
       - books
       - search
-      # - videos
+      - videos
