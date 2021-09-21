@@ -59,7 +59,7 @@
       // const postVideoName = makePostNameFunc("http://localhost:8080/api/v1/videos");
       const postBookName = makePostNameFunc("http://localhost:8080/api/v1/books");
 
-      const search = () => {
+      function search() {
         try {
           fetch("http://localhost:8080/api/v1/search")
             .then(resp => resp.json())
@@ -81,7 +81,7 @@
           console.log('--------------------------');
         }
         return false;
-      };
+      }
 
       return {
         // saveVideo: makeSaveFunc("#videoname", postVideoName),
