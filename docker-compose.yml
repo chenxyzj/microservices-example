@@ -6,6 +6,7 @@ services:
       - "3000:3000"
     volumes:
       - ./web:/src
+    working_dir: /src
     command: ["npm", "start"]
 
   search:
