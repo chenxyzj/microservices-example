@@ -10,31 +10,43 @@ services:
     command: ["npm", "start"]
 
   search:
-    build: './search'
+    image: node:14.17.3-alpine
     ports:
       - "3001:3000"
+    volumes:
+      - ./search:/src
+    working_dir: /src
     depends_on: 
       - db
     environment:
-      - MONGO_DB_URI=mongodb://db/microservices
+      - MONGO_DB_URI=mongodb://db/microservices    
+    command: ["npm", "start"]
 
   books:
-    build: './books'
+    image: node:14.17.3-alpine
     ports:
       - "3002:3000"
+    volumes:
+      - ./books:/src
+    working_dir: /src
     depends_on: 
       - db
     environment:
       - MONGO_DB_URI=mongodb://db/microservices
+    command: ["npm", "start"]  
 
   videos:
-    build: './videos'
+    image: node:14.17.3-alpine
     ports:
       - "3003:3000"
+    volumes:
+      - ./videos:/src
+    working_dir: /src
     depends_on: 
       - db
     environment:
       - MONGO_DB_URI=mongodb://db/microservices
+    command: ["npm", "start"]  
   
   db:
     image: mongo:4.4.8
