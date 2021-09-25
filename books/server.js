@@ -34,9 +34,22 @@ app.post("/api/v1/books", async (req, res) => {
   res.json(savedBook);
 });
 
-mongoose.connect(DB_URI);
+// mongoose.connect(DB_URI);
 
-app.listen(3000, () => {
-  console.log("running on port 3000");
-  console.log("--------------------------");
-});
+var connectWithRetry = function() {
+  return mongoose.connect(DB_URI, function(err) {
+    if (err) {
+      console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
+      setTimeout(connectWithRetry, 5000);
+    }
+    else {
+      app.listen(3001, () => {
+        console.log("running on port 3001");
+        console.log("--------------------------");
+      });
+    }
+  });
+};
+connectWithRetry();
+
+

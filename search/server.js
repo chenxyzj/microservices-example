@@ -5,7 +5,7 @@ if (process.env.MONGO_DB_URI) {
 }
 
 const mongoose = require("mongoose");
-mongoose.connect(DB_URI);
+
 
 const BookSchema = new mongoose.Schema({
   name: String,
@@ -78,7 +78,22 @@ app.get("/api/v1/search/depends-on", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("running on port 3000");
-  console.log("--------------------------");
-});
+// mongoose.connect(DB_URI);
+
+var connectWithRetry = function() {
+  return mongoose.connect(DB_URI, function(err) {
+    if (err) {
+      console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
+      setTimeout(connectWithRetry, 5000);
+    }
+    else {
+      app.listen(3000, () => {
+        console.log("running on port 3000");
+        console.log("--------------------------");
+      });
+    }
+  });
+};
+connectWithRetry();
+
+

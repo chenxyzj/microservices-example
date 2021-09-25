@@ -35,9 +35,26 @@ app.post("/api/v1/videos", async (req, res) => {
   res.json(savedVideo);
 });
 
-mongoose.connect(DB_URI);
+// mongoose.connect(DB_URI)
+//   .then(() => console.log("connected!"))
+//   .catch((err) => console.log("failed to connect",err));
 
-app.listen(3000, () => {
-  console.log("running on port 3000");
-  console.log("--------------------------");
-});
+
+var connectWithRetry = function() {
+  return mongoose.connect(DB_URI, function(err) {
+    if (err) {
+      console.log((new Date()).toLocaleString())
+      console.error(`Failed to connect to mongo ${DB_URI} on startup - retrying in 5 sec`, err);
+      setTimeout(connectWithRetry, 5000);
+    }
+    else {
+      app.listen(3002, () => {
+        console.log("running on port 3002");
+        console.log("--------------------------");
+      });
+      
+    }
+  });
+};
+connectWithRetry();
+
