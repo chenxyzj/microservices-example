@@ -202,3 +202,11 @@ csinodes                                       storage.k8s.io/v1                
 csistoragecapacities                           storage.k8s.io/v1beta1                 true         CSIStorageCapacity
 storageclasses                    sc           storage.k8s.io/v1                      false        StorageClass
 volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
+
+24. 服务扩容、缩容
+扩容为3个pods
+kubectl -n microservice-app scale --replicas=3 deployment microservices-deploy
+所容维1个pod
+kubectl -n microservice-app scale --replicas=1 deployment microservices-deploy
+自动扩缩容
+kubectl -n microservice-app autoscale --min=2 --max=4 deployment microservices-deploy
