@@ -1,0 +1,189 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: microservice-app
+   labels:
+     name: microservice-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservices-deploy
+  namespace: microservice-app
+  labels:
+    app: microservices
+  annotations:
+spec:
+  selector:
+    matchLabels:
+      app: microservices
+  replicas: 2;;
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: microservices
+    spec:
+      containers:
+      - name: microservices-search
+        image: node:14.17.3-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+         - name: vol-search
+           mountPath: /src
+        workingDir: /src
+        env:
+          - name: MONGO_DB_URI
+            value: mongodb://localhost:27017/microservices
+        command: ["npm", "start"] 
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: microservices-books
+        image: node:14.17.3-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3001
+        volumeMounts:
+         - name: vol-books
+           mountPath: /src
+        workingDir: /src
+        env:
+          - name: MONGO_DB_URI
+            value: mongodb://localhost:27017/microservices
+        command: ["npm", "start"]         
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: microservices-videos
+        image: node:14.17.3-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3002
+        volumeMounts:
+         - name: vol-videos
+           mountPath: /src
+        workingDir: /src
+        env:
+          - name: MONGO_DB_URI
+            value: mongodb://localhost:27017/microservices 
+        command: ["npm", "start"]         
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: microservices-web
+        image: node:14.17.3-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3003
+        volumeMounts:
+         - name: vol-web
+           mountPath: /src
+        workingDir: /src
+        env:
+          - name: MONGO_DB_URI
+            value: mongodb://localhost:27017/microservices
+        command: ["npm", "start"]          
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: microservices-db
+        image: mongo:4.4.8
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: microservices-nginx
+        image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+          - mountPath: /etc/nginx/conf.d/default.conf
+            name: vol-nginx1
+          - mountPath: /srv/www/static
+            name: vol-nginx2
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      volumes:
+        - name: vol-books
+          hostPath: 
+            path: "/Users/iov/study/microservices-example/books"
+            type: Directory
+          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\books"
+        - name: vol-videos
+          hostPath: 
+            path: "/Users/iov/study/microservices-example/videos"  
+            type: Directory          
+          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\videos"  
+        - name: vol-search
+          hostPath: 
+            path: "/Users/iov/study/microservices-example/search"  
+            type: Directory
+          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\search"  
+        - name: vol-web
+          hostPath: 
+            path: "/Users/iov/study/microservices-example/web" 
+            type: Directory
+          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\web" 
+        - name: vol-nginx1
+          hostPath:
+            path: "/Users/iov/study/microservices-example/default.conf"
+            type: File
+          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\default.conf"
+        - name: vol-nginx2
+          hostPath:
+            path: "/Users/iov/study/microservices-example/web/public" 
+            type: Directory
+            # path: "D:\\Study\\IndustrialIoT\\microservices-example\\web\\public" 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservices-service
+  namespace: microservice-app
+  labels:
+    app: microservices
+spec:
+  type: LoadBalancer
+  selector:
+    app: microservices
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8080
