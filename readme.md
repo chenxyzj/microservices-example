@@ -210,3 +210,38 @@ kubectl -n microservice-app scale --replicas=3 deployment microservices-deploy
 kubectl -n microservice-app scale --replicas=1 deployment microservices-deploy
 自动扩缩容
 kubectl -n microservice-app autoscale --min=2 --max=4 deployment microservices-deploy
+
+## 测试负载均衡，发现起作用了，但并不是平均分配。
+参考https://zhuanlan.zhihu.com/p/266422557这里
+使用 shell执行脚本
+for i in {1..10}; do curl http://localhost/api/v1/whereareyou; done 
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775➜  
+~ for i in {1..10}; do curl http://localhost/api/v1/whereareyou; done
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}%                                                                                                                            ➜  ~ for i in {1..10}; do curl http://localhost/api/v1/whereareyou; done
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-ngxt8"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}
+{"msg":"microservices-deploy-775b888d57-rsjpq"}%
