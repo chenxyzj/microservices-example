@@ -133,32 +133,32 @@ spec:
       volumes:
         - name: vol-books
           hostPath: 
-            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/books"
+            path: "/Users/iov/study/microservices-example/books"
             type: Directory
           #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\books"
         - name: vol-videos
           hostPath: 
-            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/videos"  
+            path: "/Users/iov/study/microservices-example/videos"  
             type: Directory          
           #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\videos"  
         - name: vol-search
           hostPath: 
-            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/search"  
+            path: "/Users/iov/study/microservices-example/search"  
             type: Directory
           #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\search"  
         - name: vol-web
           hostPath: 
-            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/web" 
+            path: "/Users/iov/study/microservices-example/web" 
             type: Directory
           #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\web" 
         - name: vol-nginx1
           hostPath:
-            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/default.conf"
+            path: "/Users/iov/study/microservices-example/default.conf"
             type: File
           #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\default.conf"
         - name: vol-nginx2
           hostPath:
-            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/web/public" 
+            path: "/Users/iov/study/microservices-example/web/public" 
             type: Directory
             # path: "D:\\Study\\IndustrialIoT\\microservices-example\\web\\public" 
                  

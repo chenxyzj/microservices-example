@@ -23,6 +23,10 @@ app.get("/", (req, res) => {
   res.json({ msg: "books" });
 });
 
+app.get("/api/v1/whereareyou", (req, res) => {
+  res.json({ msg: require("os").hostname() });
+});
+
 app.get("/api/v1/books", async (req, res) => {
   const books = await Book.find({});
   res.json(books);
