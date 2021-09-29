@@ -1,7 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: microservice-app
+   labels:
+     name: microservice-app
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: microservices-deploy
+  namespace: microservice-app
   labels:
     app: microservices
   annotations:
@@ -9,7 +17,7 @@ spec:
   selector:
     matchLabels:
       app: microservices
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -133,32 +141,55 @@ spec:
       volumes:
         - name: vol-books
           hostPath: 
-            path: "/Users/shawn/study/microservices-example/books"
+            # path: "/Users/shawn/study/microservices-example/books"
             type: Directory
-          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\books"
+            # path: "D:\\Study\\IndustrialIoT\\microservices-example\\books"
+            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/books"
         - name: vol-videos
           hostPath: 
-            path: "/Users/shawn/study/microservices-example/videos"  
+            # path: "/Users/shawn/study/microservices-example/videos"  
             type: Directory          
-          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\videos"  
+            # path: "D:\\Study\\IndustrialIoT\\microservices-example\\videos"
+            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/videos"
         - name: vol-search
           hostPath: 
-            path: "/Users/shawn/study/microservices-example/search"  
+            # path: "/Users/shawn/study/microservices-example/search"  
             type: Directory
-          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\search"  
+            # path: "D:\\Study\\IndustrialIoT\\microservices-example\\search" 
+            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/search"
         - name: vol-web
           hostPath: 
-            path: "/Users/shawn/study/microservices-example/web" 
+            # path: "/Users/shawn/study/microservices-example/web" 
             type: Directory
-          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\web" 
+            # path: "D:\\Study\\IndustrialIoT\\microservices-example\\web" 
+            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/web"
         - name: vol-nginx1
           hostPath:
-            path: "/Users/shawn/study/microservices-example/default.conf"
+            # path: "/Users/shawn/study/microservices-example/default.conf"
             type: File
-          #  path: "D:\\Study\\IndustrialIoT\\microservices-example\\default.conf"
+            # path: "D:\\Study\\IndustrialIoT\\microservices-example\\default.conf"
+            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/default.conf"
         - name: vol-nginx2
           hostPath:
-            path: "/Users/shawn/study/microservices-example/web/public" 
+            # path: "/Users/shawn/study/microservices-example/web/public" 
             type: Directory
             # path: "D:\\Study\\IndustrialIoT\\microservices-example\\web\\public" 
-                 
+            path: "/run/desktop/mnt/host/d/Study/IndustrialIoT/microservices-example/web/public"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservices-service
+  namespace: microservice-app
+  labels:
+    app: microservices
+spec:
+  type: LoadBalancer
+  selector:
+    app: microservices
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8080
