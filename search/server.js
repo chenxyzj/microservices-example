@@ -16,7 +16,8 @@ const BookSchema = new mongoose.Schema({
 const VideoSchema = new mongoose.Schema({
   name: String,
   type: { type: String, default: "video" },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  podName: {type: String, default: require("os").hostname()}
 });
 
 const Video = mongoose.model("Video", VideoSchema);

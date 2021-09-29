@@ -12,7 +12,8 @@ if (process.env.MONGO_DB_URI) {
 const BookSchema = new mongoose.Schema({
   name: String,
   type: { type: String, default: "book" },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  podName: {type: String, default: require("os").hostname()}
 });
 
 const Book = mongoose.model("Book", BookSchema);
